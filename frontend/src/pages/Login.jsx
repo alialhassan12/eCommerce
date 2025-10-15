@@ -1,7 +1,7 @@
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import Divider from '@mui/material/Divider';
-import Link from '@mui/material/Link';
+import { Link } from "react-router";
 import { useAuthStore } from '../store/authStore';
 import { useState } from 'react';
 
@@ -22,7 +22,7 @@ function Login() {
     return (
         <div className='signContainer'>
             <form className='signForm' onSubmit={()=>handleSubmit()}>
-                <h3>Sign Up</h3>
+                <h3>Login</h3>
                 <label>Email</label>
                 <TextField
                     sx={{
@@ -76,10 +76,10 @@ function Login() {
                     loadingPosition='end'
                     className='signBtn'
                     variant="contained"
-                >Sign Up</Button>
+                >Login</Button>
 
-                <Divider>or</Divider>
-                <p>Already have an account? <Link sx={{color:"#fff",cursor:"pointer"}}>Sign in</Link></p>
+                {/* <Divider>or</Divider> */}
+                <p>Dont have an account? <Link to={"/signup"} sx={{cursor:"pointer"}}>SignUp</Link></p>
             </form>
         </div>
     )
