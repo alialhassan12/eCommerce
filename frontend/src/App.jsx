@@ -1,4 +1,6 @@
 import {Routes,Route,Navigate} from 'react-router-dom';
+import  { Toaster } from 'react-hot-toast';
+import AOS from 'aos';
 //pages
 import Signup from './pages/Signup.jsx';
 import Login from './pages/Login.jsx';
@@ -13,15 +15,20 @@ function App() {
   const {checkAuth,isCheckingAuth,authUser}=useAuthStore();
 
   useEffect(()=>{
-    checkAuth()
+    checkAuth();
   },[]);
 
   if(isCheckingAuth){
-    return <div style={{display:"flex",justifyContent:"center", alignItems:"center" ,width:"100vw"}}>
+    return <div style={{display:"flex",justifyContent:"center", alignItems:"center" ,width:"100vw",height:"100vh"}}>
             <CircularProgress />
           </div>
   }
 
+  //intialize aos for the scroll animation
+  AOS.init({
+    duration:1000
+  });
+  
   return (
     <>
       <Routes>
@@ -29,6 +36,8 @@ function App() {
         <Route path="/signup" element={!authUser?<Signup/>:<Navigate to={"/"}/>}/>
         <Route path="/login" element={!authUser?<Login/>:<Navigate to={"/"}/>}/>
       </Routes>
+      
+      <Toaster/>
     </>
   )
 }
