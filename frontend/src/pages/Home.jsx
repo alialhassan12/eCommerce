@@ -7,7 +7,7 @@ function Home() {
       <div className=" ">
         {/* inner conatiner */}
         <div className="ml-10 mr-10 p-3 ">
-          <NavBar data-aos="fade-up"></NavBar>
+          <NavBar data-aos="fade-up" active="Home"></NavBar>
           {/* landing */}
           <div className="flex justify-center items-center"  data-aos="fade-up">
             {/* left */}
