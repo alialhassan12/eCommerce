@@ -9,9 +9,8 @@ const categoriesSchema=mongoose.Schema({
         type:String,
         default:""
     },
-    numberOfProducts:{
-        type:Number,
-        default:0
+    description:{
+        type:String,
     }
 },{timestamps:true}) ;
 

@@ -6,6 +6,8 @@ import { connectDB } from './lib/db.js';
 
 //import routes
 import authRoute from './routes/auth.route.js';
+import categoryRoute from './routes/catrgory.route.js';
+import adminRoute from './routes/admin.route.js';
 
 const app=express();
 const PORT=process.env.PORT;
@@ -27,5 +29,7 @@ app.use(cors({
 }));
 
 app.use('/api/auth',authRoute);
+app.use('/api/shop',categoryRoute);
+app.use('/api/admin',adminRoute);
 
 startServer();
