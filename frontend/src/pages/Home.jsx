@@ -1,5 +1,6 @@
 import Button from "@mui/material/Button";
-import NavBar from "../components/NavBar"
+import NavBar from "../components/NavBar";
+import {Link } from 'react-router-dom';
 import 'aos/dist/aos.css';
 
 function Home() {
@@ -13,7 +14,9 @@ function Home() {
             {/* left */}
             <div className="space-y-6">
               <h1>Your Gateway For Gaming And Pc Universe</h1>
-              <Button variant="outlined">Shop Now</Button>
+              <Link to={'/category'}>
+                <Button variant="outlined">Shop Now</Button>
+              </Link>
             </div>
             {/* right */}
             <div>

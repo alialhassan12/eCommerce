@@ -22,3 +22,14 @@ export const getProductsOfCategory=async (req,res)=>{
         res.status(500).json({message:"Internal Server Error"});
     }
 }
+
+export const getProduct=async(req,res)=>{
+    try{
+        const {prodId} =req.params;
+        const product=await Product.findById(prodId);
+        res.status(200).json(product);
+    }catch(error){
+        console.log("Error in get Product controller",error);
+        res.status(500).json({message:"Internal Server Error"});
+    }
+}
