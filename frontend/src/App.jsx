@@ -7,6 +7,7 @@ import Login from './pages/Login.jsx';
 import Home from './pages/Home.jsx';
 import Category from './pages/Category.jsx';
 import Products from './pages/Products.jsx';
+import ProductInfo from './pages/ProductInfo.jsx';
 //component
 import CircularProgress from '@mui/material/CircularProgress';
 //hooks
@@ -39,6 +40,7 @@ function App() {
         <Route path="/login" element={!authUser?<Login/>:<Navigate to={"/"}/>}/>
         <Route path='/category' element={!authUser?<Login/>:<Category/>}></Route>
         <Route path='/category/:id' element={!authUser?<Login/>:<Products/>}></Route>
+        <Route path='/category/:id/:prodId' element={!authUser?<Login/>:<ProductInfo/>}></Route>
       </Routes>
       
       <Toaster/>

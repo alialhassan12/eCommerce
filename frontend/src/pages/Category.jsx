@@ -18,7 +18,7 @@ export default function Category(){
                 <NavBar active="Categories"/>
                 {/* Category Fetch */}
                 <div data-aos="fade-up" className="space-y-10">
-                        
+                    <h1 className="text-center">Explore our Categories</h1>
                     <div className="flex  space-x-10 space-y-3 flex-wrap justify-center">
                         {isLoading
                             ?
@@ -26,7 +26,7 @@ export default function Category(){
                                 return (
                                     <div key={i} className="skeleton h-100 w-100">
                                     </div>
-                            )
+                                )
                             })
                             :categories.map((cat)=>{
                                 return <div key={cat._id} className="card  bg-base-100 image-full w-96 shadow-sm">
