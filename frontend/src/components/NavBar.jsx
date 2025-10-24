@@ -2,7 +2,10 @@ import {Link} from 'react-router-dom';
 //icons
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import { useAuthStore } from '../store/authStore';
 export default function NavBar({active}){
+    const authUser = useAuthStore((state) => state.authUser);
+
     return (
         <div className="flex sticky justify-between items-center text-white top-0 left-0 z-50">
             {/* logo */}
@@ -23,8 +26,15 @@ export default function NavBar({active}){
                         </li>
                     <li className='hover:text-blue-400 font-semibold'>
                         <Link className={active=="Support"?"text-blue-400 font-semibold":""}>Support</Link>
-                        </li>
+                    </li>
+                    {authUser.role === 'admin'
+                        ?
+                            <li className='hover:text-blue-400 font-semibold'><Link to={'/admin/Dashboard'}>Dashboard</Link></li>
+                        :
+                            <></>
+                        }
                 </ul>
+
             </div>
             {/* Cart and profile */}
             <div>

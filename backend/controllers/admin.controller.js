@@ -1,4 +1,20 @@
 import Product from "../modules/Product.js";
+import User from "../modules/User.js";
+
+// export const checkAdmin=async(req,res)=>{
+//     try {
+//         const {id}=req.body;
+//         const user=await User.findById(id);
+//         if(user?.role==='client'){
+//             return res.status(400).json({message:"Access Denied"});
+//         }
+//         res.status(200).json(user);
+
+//     } catch (error) {
+//         console.log("Error in check admin controller",error);
+//         res.status(400).json({message:"Internal Server Error"});
+//     }
+// }
 
 export const addProduct=async(req,res)=>{
     try {

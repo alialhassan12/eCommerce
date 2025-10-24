@@ -8,18 +8,20 @@ import Home from './pages/Home.jsx';
 import Category from './pages/Category.jsx';
 import Products from './pages/Products.jsx';
 import ProductInfo from './pages/ProductInfo.jsx';
+import Dashboard from './pages/Dashboard.jsx';
 //component
 import CircularProgress from '@mui/material/CircularProgress';
+import ProtectedRoutes from './components/protectedRoutes.jsx';
 //hooks
 import { useAuthStore } from './store/authStore.js';
 import { useEffect } from 'react';
 
 function App() {
-  const {checkAuth,isCheckingAuth,authUser}=useAuthStore();
-
+  const checkAuth=useAuthStore((state)=>state.checkAuth);
+  const {isCheckingAuth,authUser}=useAuthStore();
   useEffect(()=>{
     checkAuth();
-  },[]);
+  },[checkAuth]);
 
   if(isCheckingAuth){
     return <div style={{display:"flex",justifyContent:"center", alignItems:"center" ,width:"100vw",height:"100vh"}}>
@@ -31,11 +33,26 @@ function App() {
   AOS.init({
     duration:1000
   });
-  
+
+
   return (
     <>
       <Routes>
-        <Route path="/" element={authUser?<Home/>:<Navigate to={"/login"}/>}/>
+        {/* <Route 
+          path="/" 
+          element={<ProtectedRoutes allowedRole={'client'} authUser={authUser}>
+                      <Home/>
+                  </ProtectedRoutes>}
+          />
+
+        <Route 
+          path="/admin/Dashboard" 
+          element={<ProtectedRoutes allowedRole={'admin'} authUser={authUser}>
+                      <Dashboard/>
+                  </ProtectedRoutes>}
+          /> */}
+        <Route path='/' element={authUser?<Home/>:<Navigate to={'/login'}/>}></Route>
+        <Route path='/admin/Dashboard' element={authUser?.role ==='admin'?<Dashboard/>:<Navigate to={'/login'}/>}></Route>
         <Route path="/signup" element={!authUser?<Signup/>:<Navigate to={"/"}/>}/>
         <Route path="/login" element={!authUser?<Login/>:<Navigate to={"/"}/>}/>
         <Route path='/category' element={!authUser?<Login/>:<Category/>}></Route>

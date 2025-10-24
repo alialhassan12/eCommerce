@@ -15,6 +15,11 @@ const userSchema=mongoose.Schema({
         required:true,
         minlength:6,
     },
+    role:{
+        type:String,
+        required:true,
+        default:'client',
+    },
     profilePic:{
         type:String,
         default:"",

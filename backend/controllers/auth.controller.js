@@ -41,6 +41,7 @@ export const signup=async(req,res)=>{
                 fullName:newUser.fullName,
                 email:newUser.email,
                 profilePic:newUser.profilePic,
+                role:'client',
             });
         }
     } catch (error) {
@@ -70,6 +71,7 @@ export const login=async(req,res)=>{
             _id:user._id,
             fullName:user.fullName,
             email:user.email,
+            role:user.role,
             profilePic:user.profilePic
         });
     } catch (error) {
