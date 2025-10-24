@@ -16,7 +16,6 @@ function Login() {
     function handleSubmit(e){
         e.preventDefault();
         login(formData);
-        console.log(formData);
     }
 
     return (
