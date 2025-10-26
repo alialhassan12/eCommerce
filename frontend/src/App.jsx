@@ -8,7 +8,7 @@ import Home from './pages/Home.jsx';
 import Category from './pages/Category.jsx';
 import Products from './pages/Products.jsx';
 import ProductInfo from './pages/ProductInfo.jsx';
-import Dashboard from './pages/Dashboard.jsx';
+import AdminMainPage from './pages/AdminMainPage.jsx';
 //component
 import CircularProgress from '@mui/material/CircularProgress';
 import ProtectedRoutes from './components/protectedRoutes.jsx';
@@ -52,7 +52,7 @@ function App() {
                   </ProtectedRoutes>}
           /> */}
         <Route path='/' element={authUser?<Home/>:<Navigate to={'/login'}/>}></Route>
-        <Route path='/admin/Dashboard' element={authUser?.role ==='admin'?<Dashboard/>:<Navigate to={'/login'}/>}></Route>
+        <Route path='/admin/Dashboard' element={authUser?.role ==='admin'?<AdminMainPage/>:<Navigate to={'/login'}/>}></Route>
         <Route path="/signup" element={!authUser?<Signup/>:<Navigate to={"/"}/>}/>
         <Route path="/login" element={!authUser?<Login/>:<Navigate to={"/"}/>}/>
         <Route path='/category' element={!authUser?<Login/>:<Category/>}></Route>

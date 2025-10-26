@@ -54,7 +54,7 @@ export default function ProductInfo(){
                             <div className="flex justify-center items-center space-x-4 space-y-4 flex-wrap">
                                 {product.photos.map((photo,i)=>(
                                     <div key={i} onClick={()=>{setPreviewImg(photo)}} className="cursor-pointer ">
-                                        <img src={photo} className="rounded-[4px] w-[200px] h-[200px] hover:opacity-75 xl:aspect-7/8 transition duration-200"/>
+                                        <img src={photo} className="rounded-[4px] w-[100px] h-[100px] hover:opacity-75 xl:aspect-7/8 transition duration-200"/>
                                     </div>
                                 ))}
                             </div>

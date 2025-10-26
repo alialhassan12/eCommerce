@@ -29,7 +29,7 @@ export default function NavBar({active}){
                     </li>
                     {authUser.role === 'admin'
                         ?
-                            <li className='hover:text-blue-400 font-semibold'><Link to={'/admin/Dashboard'}>Dashboard</Link></li>
+                            <li className={active=="Dashboard"?"text-blue-400 font-semibold ":"hover:text-blue-400 font-semibold"}><Link to={'/admin/Dashboard'}>Dashboard</Link></li>
                         :
                             <></>
                         }
