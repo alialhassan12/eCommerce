@@ -26,5 +26,6 @@ export const useProductStore=create((set)=>({
         } finally{
             set({loadProduct:false});
         }
-    }
+    },
+    
 }));

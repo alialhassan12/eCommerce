@@ -1,4 +1,5 @@
 import Product from "../modules/Product.js";
+import Category from "../modules/Categories.js";
 import User from "../modules/User.js";
 import cloudinary from "../lib/cloudinary.js";
 
@@ -16,6 +17,25 @@ import cloudinary from "../lib/cloudinary.js";
 //         res.status(400).json({message:"Internal Server Error"});
 //     }
 // }
+export const totalUsers=async (req,res)=>{
+    try{
+        const count=await User.countDocuments();//count all users
+        res.status(200).json({count});
+    }catch(error){
+        console.log("Error in totalusers controller",error);
+        res.status(400).json({message:"Internal Server Error"});
+    }
+}
+
+export const getAllProducts=async(req,res)=>{
+    try {
+        const products=await Product.find().populate('category','name');
+        res.status(200).json(products);
+    } catch (error) {
+        console.log("Error in getAllProducts controller",error);
+        res.status(400).json({message:"Internal Server Error"});
+    }
+}
 
 export const addProduct=async(req,res)=>{
     try {
