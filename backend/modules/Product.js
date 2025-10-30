@@ -9,6 +9,9 @@ const productSchema=mongoose.Schema({
         type:Number,
         required:true
     },
+    description:{
+        type:String,
+    },
     category:{
         type:mongoose.Schema.ObjectId,
         ref:'Category',

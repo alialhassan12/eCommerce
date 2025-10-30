@@ -1,5 +1,6 @@
 import Product from "../modules/Product.js";
 import User from "../modules/User.js";
+import cloudinary from "../lib/cloudinary.js";
 
 // export const checkAdmin=async(req,res)=>{
 //     try {
@@ -18,7 +19,7 @@ import User from "../modules/User.js";
 
 export const addProduct=async(req,res)=>{
     try {
-        const {name,price,category,photos} =req.body;
+        let {name,price,category,description,photos} =req.body;
         if(!name || !price || !category|| !photos){
             return res.status(404).json({message:"Must fill all Fields"});
         }
@@ -26,9 +27,21 @@ export const addProduct=async(req,res)=>{
         if(isNaN(priceCheckIfNumber)){
             return res.status(400).json({message:"Price should be only number"});
         }
+        if(photos){
+            const uploadResponse=await Promise.all(
+                photos.map(async (photo)=>{
+                    const result =await cloudinary.uploader.upload(photo);
+                    return result;
+                })
+            );
+            photos=uploadResponse.map(res=>{
+                return res.secure_url;
+            });
+        }
         const newProduct=new Product({
             name,
             price,
+            description,
             category,
             photos,
         });
