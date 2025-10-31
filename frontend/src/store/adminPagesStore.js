@@ -5,6 +5,11 @@ import toast from "react-hot-toast";
 export const useAdminPagesStore=create((set)=>({
     page:"dashboard",
     product:null,
+    allProducts:[],
+    deletedProduct:null,
+    editedProduct:null,
+    fetchingProducts:false,
+    totalUsers:0,
     addingProduct:false,
     changePage:(page)=>{
         set({page:page});
@@ -20,6 +25,45 @@ export const useAdminPagesStore=create((set)=>({
             toast.error(error.response?.data?.message);
         } finally{
             set({addingProduct:false});
+        }
+    },
+    getTotalUsers:async()=>{
+        try {
+            const res=await axiosInstance.get('/admin/dashboard/totalUsers');
+            set({totalUsers:res.data});
+        } catch (error) {
+            console.log("Error in getTotalUsers store",error);
+        }
+    },
+    getAllProducts:async()=>{
+        set({fetchingProducts:true});
+        try {
+            const res=await axiosInstance.get('/admin/dashboard/allProducts');
+            set({allProducts:res.data});
+        } catch (error) {
+            console.log("Error getAllProducts store",error);
+        } finally{
+            set({fetchingProducts:false});
+        }
+    },
+    editProduct:async(prodId,editedProd)=>{
+        try {
+            const res=await axiosInstance.post(`/admin/dashboard/editProduct/${prodId}`,editedProd);
+            set({editedProduct:res.data});
+            toast.success(res.data.message);
+        } catch (error) {
+            console.log("Error editProduct store",error);
+            toast.error(error.response?.data?.message);
+        }
+    },
+    deleteProduct:async(prodId)=>{
+        try {
+            const res=await axiosInstance.delete(`/admin/dashboard/deleteProduct/${prodId}`);
+            set({deletedProduct:res.data.product});
+            toast.success(res.data.message);
+        } catch (error) {
+            console.log("Error deleteProduct store",error);
+            toast.error(error.response?.data?.message);
         }
     }
 }));

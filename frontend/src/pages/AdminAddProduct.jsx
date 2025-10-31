@@ -1,251 +1,205 @@
-import 'aos/dist/aos.css';
-import TextField from '@mui/material/TextField';
-import Select from '@mui/material/Select';
-import MenuItem from '@mui/material/MenuItem';
-import InputLabel from '@mui/material/InputLabel';
-import FormControl from '@mui/material/FormControl';
-import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import Button from '@mui/material/Button';
-import toast from 'react-hot-toast';
-
-import { useCategoryStore } from '../store/categoryStore';
-import { useEffect,useRef, useState } from 'react';
+import AddIcon from '@mui/icons-material/Add';
+import Dialog from '@mui/material/Dialog';
+import IconButton from '@mui/material/IconButton';
+import DeleteIcon from '@mui/icons-material/Delete';
+import EditIcon from '@mui/icons-material/Edit';
+import TextField from '@mui/material/TextField';
+import AdminAddProductCard from './AdminAddProductCard';
+import AdminEditProductCard from '../components/AdminEditProductCard';
+import SearchIcon from '@mui/icons-material/Search';
+import { useEffect, useState } from 'react';
+import InputAdornment from '@mui/material/InputAdornment';
+import Divider from '@mui/material/Divider';
 import { useAdminPagesStore } from '../store/adminPagesStore';
-
+import DialogActions from '@mui/material/DialogActions';
+import DialogTitle from '@mui/material/DialogTitle';
 
 export default function AdminAddProduct(){
-    const imageUploadRef=useRef(null);
-    const {addProduct}=useAdminPagesStore();
-    const {categories,getAllCatgeories}=useCategoryStore();
-    const [images,setImages]=useState([]);
-    const [formData,setFormData]=useState({
-        name:"",
-        price:"",
-        description:"",
-        category:"",
-        photos:[]
-    });
-    
-    useEffect(()=>{
-        getAllCatgeories();
-    },[getAllCatgeories]);
-    
-    function handleUplaodImages(e){
-        const file=e.target.files[0];
-        if(!file.type.startsWith("image/")){
-            toast.error("Please only select Image file")
-            return;
-        }
-        const reader=new FileReader();
-        reader.onload=()=>{
-            //set the state of the preview images 
-            setImages([...images,reader.result]);
-            //add the image to the formData state
-            setFormData({...formData,photos:[...images,reader.result]});
-        };
-        reader.readAsDataURL(file);
-    }
+    const [openDaialog,setOpenDialog]=useState(false);
+    const [openDeleteDialog,setOpenDeleteDialog]=useState(false);
+    const [openEditDialog,setOpenEditDialog]=useState(false);
+    const [selectedProductId,setSelectedProductId]=useState(null);
+    const [selectedProductToEdit,setSelectedProductToEdit]=useState(null);
+    const {
+            getAllProducts,
+            allProducts,
+            fetchingProducts,
+            editedProduct,
+            deleteProduct,
+            deletedProduct,
+        }=useAdminPagesStore();
+    const [searchInp,setSearchInp]=useState("");
 
-    function handleSubmit(e){
-        e.preventDefault();
-        addProduct(formData);
-        setFormData({
-            name:"",
-            price:"",
-            description:"",
-            category:0,
-            photos:[]
-        });
+    useEffect(()=>{
+        getAllProducts();
+    },[getAllProducts,deletedProduct,editedProduct]);
+    
+    //handlers
+    function handleDeleteProduct(prodId){
+        deleteProduct(prodId);
+    }
+    // dialogs handlers
+    function handleOpenDeleteDialog(id){
+        setSelectedProductId(id);
+        setOpenDeleteDialog(true);
+        
+    }
+    function handleCloseDeleteDialog(){
+        setSelectedProductId(null);
+        setOpenDeleteDialog(false);
+    }
+    function handleOpenEditDialog(product){
+        setSelectedProductToEdit(product);
+        setOpenEditDialog(true);
+    }
+    function handleCloseEditDialog(){
+        setOpenEditDialog(false);
     }
 
     return(
-        <div className="w-full space-y-15" data-aos="fade-up">
-            <h1 className="text-center mt-[50px]">Add Product</h1>
-            <div className='flex justify-center items-center'>
-                <form className='w-[500px] p-[20px] bg-gradient-to-b from-[#0a0f1c] via-[#0e1422] to-[#0b0f19] rounded-[10px] border border-[#1e2a3a] shadow-[0_0_20px_rgba(0,0,0,0.4)]'>
-                    <h2 className='text-blue-400 text-[24px]'>Create New Product</h2>
-                    <div className='mt-10 '>
-                        {/* product name TextField */}
-                        <TextField
-                            value={formData.name}
-                            onChange={(e)=>setFormData({...formData,name:e.target.value})}
-                            fullWidth
-                            variant="standard" label="Product Name" name='productname'
-                            sx={{   
-                                    mb:"20px",
-                                    // === LABEL (the floating placeholder) ===
-                                    "& .MuiInputLabel-root": {
-                                        color: "#94a3b8", // 👈 before focus
-                                    },
-                                    "& .MuiOutlinedInput-root": {
-                                        color:"#64748b",
-                                        // borderBottomColor:"#e2e8f0",
-                                        "& fieldset": {
-                                            borderColor: "#fff", // default border
-                                        },
-                                        "&:hover fieldset": {
-                                            borderColor: "#2f4057", // hover border
-                                        },
-                                        "&.Mui-focused fieldset": {
-                                            borderColor: "#fff", // focused border
-                                        },
-                                    },
-                                    // === Input Text ===
-                                    "& .MuiInputBase-input::placeholder": {
-                                        color: "#64748b",
-                                        opacity: 1, // important! to ensure color isn't faded
-                                    },
-                                    "& .MuiInputBase-input": {
-                                        color: "#e2e8f0", // text color
-                                    },
-                                    // === Underline (the bottom line) ===
-                                    "& .MuiInput-underline:before": {
-                                        borderBottomColor: "#1e2a3a", // default line color
-                                    },
-                                    "& .MuiInput-underline:hover:before": {
-                                        borderBottomColor: "#64748b", // hover color
-                                    },
-                                    // "& .MuiInput-underline:after": {
-                                    //     borderBottomColor: "#4fc3f7", // focus color
-                                    // },
-                                }}></TextField>
-
-                        {/* Price TextField */}
-                        <TextField
-                            value={formData.price}
-                            onChange={(e)=>setFormData({...formData,price:e.target.value})}
-                            fullWidth
-                            variant="standard" label="Price" name='price'
-                            sx={{   
-                                    mb:"20px",
-                                    // === LABEL (the floating placeholder) ===
-                                    "& .MuiInputLabel-root": {
-                                        color: "#94a3b8", // 👈 before focus
-                                    },
-                                    "& .MuiOutlinedInput-root": {
-                                        color:"#64748b",
-                                        // borderBottomColor:"#e2e8f0",
-                                        "& fieldset": {
-                                            borderColor: "#fff", // default border
-                                        },
-                                        "&:hover fieldset": {
-                                            borderColor: "#2f4057", // hover border
-                                        },
-                                        "&.Mui-focused fieldset": {
-                                            borderColor: "#fff", // focused border
-                                        },
-                                    },
-                                    // === Input Text ===
-                                    "& .MuiInputBase-input::placeholder": {
-                                        color: "#64748b",
-                                        opacity: 1, // important! to ensure color isn't faded
-                                    },
-                                    "& .MuiInputBase-input": {
-                                        color: "#e2e8f0", // text color
-                                    },
-                                    // === Underline (the bottom line) ===
-                                    "& .MuiInput-underline:before": {
-                                        borderBottomColor: "#1e2a3a", // default line color
-                                    },
-                                    "& .MuiInput-underline:hover:before": {
-                                        borderBottomColor: "#64748b", // hover color
-                                    },
-                                    // "& .MuiInput-underline:after": {
-                                    //     borderBottomColor: "#4fc3f7", // focus color
-                                    // },
-                                }}></TextField>
-
-                        {/* Description Field */}
-                        <TextField
-                            value={formData.description}
-                            onChange={(e)=>setFormData({...formData,description:e.target.value})}
-                            fullWidth
-                            variant="standard" label="Description" name='price'
-                            multiline rows={4}
-                            sx={{   
-                                    mb:"20px",
-                                    // === LABEL (the floating placeholder) ===
-                                    "& .MuiInputLabel-root": {
-                                        color: "#94a3b8", // 👈 before focus
-                                    },
-                                    "& .MuiOutlinedInput-root": {
-                                        color:"#64748b",
-                                        // borderBottomColor:"#e2e8f0",
-                                        "& fieldset": {
-                                            borderColor: "#fff", // default border
-                                        },
-                                        "&:hover fieldset": {
-                                            borderColor: "#2f4057", // hover border
-                                        },
-                                        "&.Mui-focused fieldset": {
-                                            borderColor: "#fff", // focused border
-                                        },
-                                    },
-                                    // === Input Text ===
-                                    "& .MuiInputBase-input::placeholder": {
-                                        color: "#64748b",
-                                        opacity: 1, // important! to ensure color isn't faded
-                                    },
-                                    "& .MuiInputBase-input": {
-                                        color: "#e2e8f0", // text color
-                                    },
-                                    // === Underline (the bottom line) ===
-                                    "& .MuiInput-underline:before": {
-                                        borderBottomColor: "#1e2a3a", // default line color
-                                    },
-                                    "& .MuiInput-underline:hover:before": {
-                                        borderBottomColor: "#64748b", // hover color
-                                    },
-                                    // "& .MuiInput-underline:after": {
-                                    //     borderBottomColor: "#4fc3f7", // focus color
-                                    // },
-                                }}></TextField>
-
-                                {/* Select Category */}
-                                <FormControl fullWidth
-                                    sx={{
-                                        mb:"20px",
-                                        "& .MuiOutlinedInput-root": {
-                                        color:"#64748b",
-                                        // borderBottomColor:"#e2e8f0",
-                                        "& fieldset": {
-                                            borderColor: "#2f4057", // default border
-                                        },
-                                        "&:hover fieldset": {
-                                            borderColor: "#000", // hover border
-                                        },
-                                        "&.Mui-focused fieldset": {
-                                            borderColor: "#primary", // focused border
-                                        },
-                                    },}}
-                                    >
-                                    <InputLabel sx={{color:"#94a3b8"}}>Category</InputLabel>
-                                    <Select
-                                        value={formData.category}
-                                        label="Category"
-                                        onChange={(e)=>setFormData({...formData,category:e.target.value})}
-                                        >
-                                        {categories?.map(category=>{
-                                            return <MenuItem key={category._id} value={category._id}>{category.name}</MenuItem>
-                                        })}
-                                    </Select>
-                                </FormControl>
-                                {/* uplad images */}
-                                <Button onClick={()=>imageUploadRef.current.click()} 
-                                        variant='contained' 
-                                        startIcon={<CloudUploadIcon/>}
-                                    >Image uplaod</Button>
-                                <input onChange={handleUplaodImages} type="file" accept='image/*' ref={imageUploadRef} className='hidden'/>
-                                <div className='flex flex-wrap gap-2 mt-5 mb-[20px]'>
-                                    {images?.map(image=>{
-                                        return <img key={image} className='w-[100px] h-[100px] rounded-2xl' src={image}></img>
-                                    })}
-                                </div>
-                                {/* submit button */}
-                                <Button variant='contained' className='w-full' onClick={handleSubmit}>Add Product</Button>
-                    </div>
-                </form>
+        <div className="w-full space-y-15 " data-aos="fade-up">
+            {/* header */}
+            <div className="flex justify-between items-center mt-[50px] mr-[50px]">
+                <h1 >Manage Products</h1>
+                <Button onClick={()=>setOpenDialog(true)} variant='contained' startIcon={<AddIcon/>} >Add Product</Button>
             </div>
+            {/* show Products  */}
+            <div className=' p-7 mr-[50px] bg-gradient-to-b from-[#0a0f1c] via-[#0e1422] to-[#0b0f19] rounded-[10px] border border-[#1e2a3a] shadow-[0_0_20px_rgba(0,0,0,0.4)]'>
+                {/* header */}
+                <p className='text-2xl'>All Products</p>
+                <TextField
+                    value={searchInp}
+                    onChange={(e)=>setSearchInp(e.target.value)}
+                    variant='outlined' 
+                    placeholder='Search Products'
+                    className='w-full'
+                    sx={{
+                        mt:"10px",
+                        "& .MuiOutlinedInput-root": {
+                                color:"#64748b",
+                                // borderBottomColor:"#e2e8f0",
+                                "& fieldset": {
+                                    borderColor: "#2f4057", // default border
+                                },
+                            },
+                        // === Input Text ===
+                        "& .MuiInputBase-input::placeholder": {
+                                color: "#64748b",
+                                opacity: 1, // important! to ensure color isn't faded
+                            },
+                        "& .MuiInputBase-input": {
+                            color: "#e2e8f0", // text color
+                        },
+                    }}
+                    //add start search icon 
+                    slotProps={{
+                        input: {
+                        startAdornment: <InputAdornment sx={{color:"#2f4057"}} position="start"><SearchIcon/></InputAdornment>,
+                        },
+                    }}
+                ></TextField>
+                {/* display products */}
+                {fetchingProducts
+                ?   
+                    <div className='flex justify-center items-center mt-[20px]'>
+                        <span className="loading loading-spinner loading-xl"></span>
+                    </div>
+                :
+                    <div className='mt-[20px] mb-[20px] border-b-amber-1 '>
+                    {/* header */}
+                    <div className='flex justify-around items-center pb-5 '>
+                        <p className='w-[80px] text-center'>Image</p>
+                        <p className='w-[80px] text-center' >Name</p>
+                        <p className='w-[150px] text-center'>Category</p>
+                        <p className='w-[80px] text-center'> Price</p>
+                        <p className='w-[80px] text-center'>Actions</p>
+                    </div>
+                    <Divider sx={{borderColor:"#2f4057"}}/>
+                    {allProducts.map(product=>{
+                        if(searchInp.trim() === ""){
+                            return(
+                                <div key={product._id} className='hover:bg-blue-500/20 transition-colors duration-200'>
+                                    <div className='flex justify-around items-center pb-5'>
+                                        <img className='w-[80px] mt-2 rounded-2xl' src={product.photos[0]}></img>
+                                        <p className='w-[80px] text-center'>{product.name}</p>
+                                        <p className='w-[150px] text-center'>{product.category.name}</p>
+                                        <p className='w-[80px] text-center'>${product.price}</p>
+                                        {/* actions */}
+                                        <div>
+                                            <IconButton onClick={()=>handleOpenEditDialog(product)}>
+                                                <EditIcon color="primary"/>
+                                            </IconButton>
+                                            <IconButton onClick={()=>handleOpenDeleteDialog(product._id)}>
+                                                <DeleteIcon color="error"/>
+                                            </IconButton>
+                                        </div>
+                                    </div>
+                                    <Divider sx={{borderColor:"#2f4057"}}/>
+                                </div>
+                            );
+                        }else if(product.name.toLowerCase().includes(searchInp.toLowerCase())){
+                            return(
+                            <div key={product._id} className='hover:bg-blue-500/20 transition-colors duration-200'>
+                                    <div className='flex justify-around items-center pb-5'>
+                                        <img className='w-[80px] mt-2 rounded-2xl' src={product.photos[0]}></img>
+                                        <p className='w-[80px] text-center'>{product.name}</p>
+                                        <p className='w-[150px] text-center'>{product.category.name}</p>
+                                        <p className='w-[80px] text-center'>${product.price}</p>
+                                        {/* actions */}
+                                        <div>
+                                            <IconButton onClick={()=>handleOpenEditDialog(product)} >
+                                                <EditIcon color="primary"/>
+                                                </IconButton>
+                                            <IconButton onClick={()=>handleOpenDeleteDialog(product._id)}>
+                                                <DeleteIcon color="error"/>
+                                            </IconButton>
+                                        </div>
+                                    </div>
+                                    <Divider sx={{borderColor:"#2f4057"}}/>
+                                </div>
+                            );
+                        }
+                    })}
+                </div>
+                }
+                
+            </div>
+            {/* dialog for add product card */}
+            <Dialog  open={openDaialog} onClose={()=>setOpenDialog(false)}
+                PaperProps={{
+                    sx:{
+                        backgroundColor: "transparent",
+                        boxShadow: "none",
+                    }
+                }}>
+                    <AdminAddProductCard/>
+            </Dialog>
+            {/* dialog for deleteProduct */}
+            <Dialog open={openDeleteDialog} onClose={handleCloseDeleteDialog} >
+                <DialogTitle id="alert-dialog-title">
+                    Are You Sure Wanna Delete This product?
+                </DialogTitle>
+                <DialogActions>
+                    <Button onClick={handleCloseDeleteDialog}>Disagree</Button>
+                    <Button onClick={()=>{
+                                handleDeleteProduct(selectedProductId);
+                                handleCloseDeleteDialog();
+                            }} autoFocus>
+                        Agree
+                    </Button>
+                </DialogActions>
+            </Dialog>
+            {/* dialog for editProduct */}
+            <Dialog  open={openEditDialog} onClose={handleCloseEditDialog}
+                PaperProps={{
+                    sx:{
+                        backgroundColor: "transparent",
+                        boxShadow: "none",
+                    }
+                }}>
+                    <AdminEditProductCard product={selectedProductToEdit} close={handleCloseEditDialog}/>
+            </Dialog>
         </div>
-    );
+    )
 }

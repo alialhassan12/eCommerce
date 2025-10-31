@@ -9,7 +9,7 @@ export default function Dashboard(){
     const {page}=useAdminPagesStore();
 
     return(
-        <div className=" flex" >
+        <div className=" flex space-x-10" >
             <AdminSideBar  active={page}></AdminSideBar>
             {/* page Conetent */}
             <div className="w-full" data-aos="fade-up">
