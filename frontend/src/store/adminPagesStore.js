@@ -6,9 +6,11 @@ export const useAdminPagesStore=create((set)=>({
     page:"dashboard",
     product:null,
     allProducts:[],
+    allCategories:[],
     deletedProduct:null,
     editedProduct:null,
     fetchingProducts:false,
+    fetchingCategories:false,
     totalUsers:0,
     addingProduct:false,
     changePage:(page)=>{
@@ -64,6 +66,18 @@ export const useAdminPagesStore=create((set)=>({
         } catch (error) {
             console.log("Error deleteProduct store",error);
             toast.error(error.response?.data?.message);
+        }
+    },
+    getAllCategories:async()=>{
+        set({fetchingCategories:true});
+        try {
+            const res=await axiosInstance.get('/admin/dashboard/allCategories');
+            set({allCategories:res.data});
+        } catch (error) {
+            console.log("Error getAllCategories store",error);
+            toast.error(error.response?.data?.message);
+        } finally{
+            set({fetchingCategories:false});
         }
     }
 }));

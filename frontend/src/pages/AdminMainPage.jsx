@@ -4,6 +4,7 @@ import { useAdminPagesStore } from '../store/adminPagesStore';
 //pages
 import AdminDashboard from './AdminDashboard';
 import AdminAddProduct from './AdminAddProduct';
+import AdminAddCategory from './AdminAddCategory';
 
 export default function Dashboard(){
     const {page}=useAdminPagesStore();
@@ -18,10 +19,14 @@ export default function Dashboard(){
                         <AdminDashboard/>
                     :
                         page==="addProduct"
-                        ?
-                            <AdminAddProduct/>
-                        :
-                            ""
+                    ?
+                        <AdminAddProduct/>
+                    :
+                        page==="categories"
+                    ?   
+                        <AdminAddCategory/>
+                    :
+                        ""
                 }
             </div>
         </div>

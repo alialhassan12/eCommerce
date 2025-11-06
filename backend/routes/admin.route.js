@@ -2,7 +2,7 @@ import express from 'express';
 import {protectRoute} from '../middlewares/auth.middleware.js';
 import { checkAdminRole } from '../middlewares/role.middleware.js';
 //controllers
-import { addProduct,totalUsers,getAllProducts,editProduct,deleteProduct } from '../controllers/admin.controller.js';
+import { addProduct,totalUsers,getAllProducts,editProduct,deleteProduct, getAllCategories } from '../controllers/admin.controller.js';
 
 const server =express.Router();
 
@@ -14,5 +14,6 @@ server.get('/dashboard/totalUsers',totalUsers);
 server.get('/dashboard/allProducts',getAllProducts);
 server.post('/dashboard/editProduct/:id',editProduct);
 server.delete('/dashboard/deleteProduct/:id',deleteProduct);
+server.get('/dashboard/allCategories',getAllCategories);
 
 export default server;

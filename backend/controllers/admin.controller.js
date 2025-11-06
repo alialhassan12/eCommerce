@@ -107,3 +107,15 @@ export const editProduct=async (req,res)=>{
         res.status(400).json({message:"Internal Server Error"});
     }
 }
+
+//categories controllers
+
+export const getAllCategories=async (req,res)=>{
+    try {
+        const allCategories=await Category.find();
+        res.status(200).json(allCategories);
+    } catch (error) {
+        console.log("Error in getAllCategories controller",error);
+        res.status(400).json({message:"Internal Server Error"});
+    }
+}

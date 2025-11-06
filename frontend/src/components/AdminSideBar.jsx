@@ -3,6 +3,7 @@ import { useAdminPagesStore } from '../store/adminPagesStore';
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import HomeIcon from '@mui/icons-material/Home';
 import InventoryIcon from '@mui/icons-material/Inventory';
+import CategoryIcon from '@mui/icons-material/Category';
 
 export default function AdminSideBar({active}){
     const {changePage}=useAdminPagesStore();
@@ -26,6 +27,9 @@ export default function AdminSideBar({active}){
                 </a></li>
                 <li><a onClick={()=>handlePageChange("addProduct")} className={active=="addProduct"?"bg-blue-400":""}>
                     <InventoryIcon/>Manage Products
+                    </a></li>
+                <li><a onClick={()=>handlePageChange("categories")} className={active=="categories"?"bg-blue-400":""}>
+                    <CategoryIcon/>Manage Categories
                     </a></li>
             </ul>
         </div>
