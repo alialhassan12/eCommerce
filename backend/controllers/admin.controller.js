@@ -107,3 +107,80 @@ export const editProduct=async (req,res)=>{
         res.status(400).json({message:"Internal Server Error"});
     }
 }
+
+//categories controllers
+
+export const getAllCategories=async (req,res)=>{
+    try {
+        const allCategories=await Category.find();
+        res.status(200).json(allCategories);
+    } catch (error) {
+        console.log("Error in getAllCategories controller",error);
+        res.status(400).json({message:"Internal Server Error"});
+    }
+}
+
+export const addCategory=async (req,res)=>{
+    try {
+        let {name,description,image}=req.body;
+        if(!name || !description){
+            return res.status(400).json({message:"Must Fill all Fields"});
+        }
+        if(image){
+            const uploadResponse=await cloudinary.uploader.upload(image);
+            image=uploadResponse.secure_url;
+        }
+        const newCategory=new Category({
+            name,
+            description,
+            image,
+        });
+        await newCategory.save();
+        res.status(200).json(newCategory);
+
+    } catch (error) {
+        console.log("Error in addCategory controller",error);
+        res.status(400).json({message:"Internal Server Error"});
+    }
+}
+
+export const deleteCategory=async(req,res)=>{
+    try {
+        const {id}=req.params;
+        const deletedCategory=await Category.findByIdAndDelete(id);
+
+        //delete all products tha have this id
+        await Product.deleteMany({category:id});
+        
+        if(!deleteCategory){
+            return res.status(400).json({message:"Category not Found"});
+        }
+        res.status(200).json(deletedCategory);
+    } catch (error) {
+        console.log("Error in deleteCategory controller",error);
+        res.status(400).json({message:"Internal Server Error"});
+    }
+}
+
+export const editCategory=async(req,res)=>{
+    try {
+        const {id}=req.params;
+        const {name,description,image}=req.body;
+        
+        const editedCategory=await Category.findByIdAndUpdate(id,{
+                name,
+                description,
+                image
+            },
+            { new: true } // ✅ return updated document instead of old one);
+        ); 
+        if(!editCategory){
+            return res.status(400).json({message:"Category Not Found"});
+        }
+
+        res.status(200).json(editCategory);
+    } catch (error) {
+        console.log("Error in editCategory controller",error);
+        res.status(400).json({message:"Internal Server Error"});
+    }
+}
