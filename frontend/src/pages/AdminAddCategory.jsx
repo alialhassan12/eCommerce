@@ -10,21 +10,58 @@ import Divider from '@mui/material/Divider';
 import { useEffect } from 'react';
 import IconButton from '@mui/material/IconButton';
 import { useState } from 'react';
+import AdminAddCategoryCard from '../components/AdminAddCategoryCard';
+import Dialog from '@mui/material/Dialog';
+import DialogTitle from '@mui/material/DialogTitle';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import AdminEditCategoryCard from '../components/AdminEditCategoryCard';
 
 export default function AdminAddCategory(){
-    const{allCategories,fetchingCategories,getAllCategories}=useAdminPagesStore();
+    const{allCategories,
+            fetchingCategories,
+            getAllCategories,
+            newCategory,
+            deleteCategory,
+            deletedCategory,
+            editedCategory
+        }=useAdminPagesStore();
+
     const [searchInp,setSearchInp]=useState("");
+    const [openAddCategoryDialog,setOpenAddCategoryDialog]=useState(false);
+    const [openDeleteDialog,setOpenDeleteDialog]=useState(false);
+    const [openEditDialog,setOpenEditDialog]=useState(false);
+    const [selectedCategoryId,setSelectedCategoryId]=useState(null);
+    const [selectedCategoryToEdit,setSelectedCategoryToEdit]=useState(null);
+
     useEffect(()=>{
         getAllCategories();
-    },[getAllCategories]);
-    console.log(allCategories)
+    },[getAllCategories,newCategory,deletedCategory,editedCategory]);
 
+    //handlers
+    function handleOpenDeleteDialog(id){
+        setSelectedCategoryId(id);
+        setOpenDeleteDialog(true);
+    }
+    function handleCloseDeleteDialog(){
+        setOpenDeleteDialog(false);
+    }
+    function handleDeleteCategory(categoryId){
+        deleteCategory(categoryId);
+    }
+    function handleOpenEditDialog(category){
+        setSelectedCategoryToEdit(category);
+        setOpenEditDialog(true);
+    }
+    function handleCloseEditDialog(){
+        setOpenEditDialog(false);
+    }
     return(
         <div className="w-full space-y-15 " data-aos="fade-up">
             {/* header */}
             <div className="flex justify-between items-center mt-[50px] mr-[50px]">
                 <h1 >Manage Categories</h1>
-                <Button  variant='contained' startIcon={<AddIcon/>} >Add Category</Button>
+                <Button onClick={()=>{setOpenAddCategoryDialog(true)}} variant='contained' startIcon={<AddIcon/>} >Add Category</Button>
             </div>
             {/* show Categories  */}
             <div className=' p-7 mr-[50px] bg-gradient-to-b from-[#0a0f1c] via-[#0e1422] to-[#0b0f19] rounded-[10px] border border-[#1e2a3a] shadow-[0_0_20px_rgba(0,0,0,0.4)]'>
@@ -85,10 +122,10 @@ export default function AdminAddCategory(){
                                         {/* actions */}
                                         <div>
                                             <IconButton >
-                                                <EditIcon color="primary"/>
+                                                <EditIcon onClick={()=>{handleOpenEditDialog(category)}} color="primary"/>
                                             </IconButton>
                                             <IconButton>
-                                                <DeleteIcon color="error"/>
+                                                <DeleteIcon  onClick={()=>{handleOpenDeleteDialog(category._id)}}  color="error"/>
                                             </IconButton>
                                         </div>
                                     </div>
@@ -104,10 +141,10 @@ export default function AdminAddCategory(){
                                         {/* actions */}
                                         <div>
                                             <IconButton  >
-                                                <EditIcon color="primary"/>
+                                                <EditIcon onClick={()=>{handleOpenEditDialog(category)}} color="primary"/>
                                                 </IconButton>
                                             <IconButton >
-                                                <DeleteIcon color="error"/>
+                                                <DeleteIcon onClick={()=>{handleOpenDeleteDialog(category._id)}} color="error"/>
                                             </IconButton>
                                         </div>
                                     </div>
@@ -119,6 +156,46 @@ export default function AdminAddCategory(){
                     </div>
                 }
             </div>
+            {/* dialog for add product card */}
+            <Dialog  open={openAddCategoryDialog} onClose={()=>setOpenAddCategoryDialog(false)}
+                PaperProps={{
+                    sx:{
+                        backgroundColor: "transparent",
+                        boxShadow: "none",
+                    }
+                }}>
+                    <AdminAddCategoryCard/>
+            </Dialog>
+            {/* delete Dialog */}
+            <Dialog open={openDeleteDialog} onClose={handleCloseDeleteDialog} >
+                    <DialogTitle id="alert-dialog-title">
+                        Are You Sure Wanna Delete This Categgory?
+                    </DialogTitle>
+                    <DialogContent > 
+                        <p className='text-red-600'>
+                            This will affect all Products in this Category!
+                        </p>
+                    </DialogContent>
+                    <DialogActions>
+                        <Button onClick={handleCloseDeleteDialog}>Disagree</Button>
+                        <Button onClick={()=>{
+                                    handleDeleteCategory(selectedCategoryId);
+                                    handleCloseDeleteDialog();
+                                }} autoFocus>
+                            Agree
+                        </Button>
+                    </DialogActions>
+                </Dialog>
+                {/* Edit Dialog */}
+                <Dialog  open={openEditDialog} onClose={handleCloseEditDialog}
+                    PaperProps={{
+                        sx:{
+                            backgroundColor: "transparent",
+                            boxShadow: "none",
+                        }
+                    }}>
+                        <AdminEditCategoryCard category={selectedCategoryToEdit} close={handleCloseEditDialog}/>
+                </Dialog>
         </div>
     );
 }

@@ -15,7 +15,7 @@ import { useAdminPagesStore } from '../store/adminPagesStore';
 
 export default function AdminEditProductCard({product,close}){
     const imageUploadRef=useRef(null);
-    const {editProduct}=useAdminPagesStore();
+    const {editProduct,edittingProduct}=useAdminPagesStore();
     const {categories,getAllCatgeories}=useCategoryStore();
     const [formData,setFormData]=useState({
         name:product.name,
@@ -54,7 +54,7 @@ export default function AdminEditProductCard({product,close}){
         <div className="w-full space-y-15" >
             <div className='flex justify-center items-center'>
                 <form className='w-[500px] p-[20px] bg-gradient-to-b from-[#0a0f1c] via-[#0e1422] to-[#0b0f19] rounded-[10px] border border-[#1e2a3a] shadow-[0_0_20px_rgba(0,0,0,0.4)]'>
-                    <h2 className='text-blue-400 text-[24px]'>Create New Product</h2>
+                    <h2 className='text-blue-400 text-[24px]'>Edit Product</h2>
                     <div className='mt-5 '>
                         {/* product name TextField */}
                         <TextField
@@ -233,7 +233,17 @@ export default function AdminEditProductCard({product,close}){
                                     })}
                                 </div>
                                 {/* submit button */}
-                                <Button variant='contained' className='w-full' onClick={handleSubmit}>Edit Product</Button>
+                                {edittingProduct
+                                ?
+                                    <div className="w-full text-center">
+                                        <div className="loading loading-infinity loading-xl text-blue-500"></div>
+                                    </div>
+                                :
+                                    <Button variant="contained" className="w-full"
+                                            onClick={handleSubmit}>
+                                        Edit Product
+                                    </Button>
+                                }
                     </div>
                 </form>
             </div>
