@@ -70,12 +70,17 @@ function Login() {
                     value={formData.password}
                     onChange={(e)=>setFormdata({...formData,password:e.target.value})}
                     />
-                <Button onClick={handleSubmit} 
-                    loading={isLoggingIn}
-                    loadingPosition='end'
-                    className='signBtn'
-                    variant="contained"
-                >Login</Button>
+                {
+                    isLoggingIn
+                ?
+                    <div className="w-full text-center">
+                        <div className="loading loading-infinity loading-xl text-blue-500"></div>
+                    </div>
+                :
+                    <Button onClick={handleSubmit} 
+                        className='signBtn' 
+                        variant="contained">Login</Button>
+                }
 
                 {/* <Divider>or</Divider> */}
                 <p>Dont have an account? <Link to={"/signup"} sx={{cursor:"pointer"}}>SignUp</Link></p>
