@@ -174,13 +174,88 @@ export const editCategory=async(req,res)=>{
             },
             { new: true } // ✅ return updated document instead of old one);
         ); 
-        if(!editCategory){
+        if(!editedCategory){
             return res.status(400).json({message:"Category Not Found"});
         }
 
-        res.status(200).json(editCategory);
+        res.status(200).json(editedCategory);
     } catch (error) {
         console.log("Error in editCategory controller",error);
+        res.status(400).json({message:"Internal Server Error"});
+    }
+}
+
+//users controllers
+export const getAllUsers=async(req,res)=>{
+    try {
+        const allUsers=await User.find();
+        res.status(200).json(allUsers);
+    } catch (error) {
+        console.log("Error in getAllUsers controller",error);
+        res.status(400).json({message:"Internal Server Error"});
+    }
+}
+
+export const banUser=async (req,res)=>{
+    try {
+        const {userId}=req.params;
+        const user=await User.findById(userId);
+        if(!user){
+            return res.status(404).json({message:"User Not Found"});
+        }
+        user.banned=true;
+        await user.save();
+        res.status(200).json(user);
+    } catch (error) {
+        console.log("Error in banUser controller",error);
+        res.status(400).json({message:"Internal Server Error"});
+    }
+}
+
+export const unBanUser=async (req,res)=>{
+    try {
+        const {userId}=req.params;
+        const user=await User.findById(userId);
+        if(!user){
+            return res.status(404).json({message:"User Not Found"});
+        }
+        user.banned=false;
+        await user.save();
+        res.status(200).json(user);
+    } catch (error) {
+        console.log("Error in banUser controller",error);
+        res.status(400).json({message:"Internal Server Error"});
+    }
+}
+
+export const promoteUser=async(req,res)=>{
+    try {
+        const {userId}=req.params;
+        const user=await User.findById(userId);
+        if(!user){
+            return res.status(404).json({message:"User Not Found"});
+        }
+        user.role="admin";
+        await user.save();
+        res.status(200).json(user);
+    } catch (error) {
+        console.log("Error in banUser controller",error);
+        res.status(400).json({message:"Internal Server Error"});
+    }
+}
+
+export const demoteUser=async(req,res)=>{
+    try {
+        const {userId}=req.params;
+        const user=await User.findById(userId);
+        if(!user){
+            return res.status(404).json({message:"User Not Found"});
+        }
+        user.role="client";
+        await user.save();
+        res.status(200).json(user);
+    } catch (error) {
+        console.log("Error in banUser controller",error);
         res.status(400).json({message:"Internal Server Error"});
     }
 }

@@ -5,6 +5,7 @@ import { useAdminPagesStore } from '../store/adminPagesStore';
 import AdminDashboard from './AdminDashboard';
 import AdminAddProduct from './AdminAddProduct';
 import AdminAddCategory from './AdminAddCategory';
+import AdminManageUsers from './AdminManageUsers';
 
 export default function Dashboard(){
     const {page}=useAdminPagesStore();
@@ -25,6 +26,10 @@ export default function Dashboard(){
                         page==="categories"
                     ?   
                         <AdminAddCategory/>
+                    :
+                        page ==="users"
+                    ?
+                        <AdminManageUsers></AdminManageUsers>
                     :
                         ""
                 }

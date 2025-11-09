@@ -23,6 +23,10 @@ const userSchema=mongoose.Schema({
     profilePic:{
         type:String,
         default:"",
+    },
+    banned:{
+        type:Boolean,
+        default:false
     }
 },{
     timestamps:true //this will auto create the createdAt && updatedAt
