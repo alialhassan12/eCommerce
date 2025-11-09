@@ -65,6 +65,9 @@ export const login=async(req,res)=>{
         if(!isPasswordCorrect){
             return res.status(400).json({message:"Invalid credentials"});
         }
+        if(user.banned){
+            return res.status(403).json({message:"Sorry your account Banned! Contact Support for assistance"});
+        }
         //generate token after successfull validation
         generateToken(user._id,res);
         res.status(200).json({

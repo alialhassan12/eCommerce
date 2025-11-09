@@ -4,6 +4,7 @@ import DashboardIcon from '@mui/icons-material/Dashboard';
 import HomeIcon from '@mui/icons-material/Home';
 import InventoryIcon from '@mui/icons-material/Inventory';
 import CategoryIcon from '@mui/icons-material/Category';
+import GroupIcon from '@mui/icons-material/Group';
 
 export default function AdminSideBar({active}){
     const {changePage}=useAdminPagesStore();
@@ -26,10 +27,13 @@ export default function AdminSideBar({active}){
                 <HomeIcon/>Home
                 </a></li>
                 <li><a onClick={()=>handlePageChange("addProduct")} className={active=="addProduct"?"bg-blue-400":""}>
-                    <InventoryIcon/>Manage Products
+                    <InventoryIcon/>Products
                     </a></li>
                 <li><a onClick={()=>handlePageChange("categories")} className={active=="categories"?"bg-blue-400":""}>
-                    <CategoryIcon/>Manage Categories
+                    <CategoryIcon/>Categories
+                    </a></li>
+                <li><a onClick={()=>handlePageChange("users")} className={active=="users"?"bg-blue-400":""}>
+                    <GroupIcon/>Users
                     </a></li>
             </ul>
         </div>

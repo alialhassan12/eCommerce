@@ -6,8 +6,13 @@ export const useAdminPagesStore=create((set)=>({
     page:"dashboard",
     product:null,
     newCategory:null,
+    bannedUser:null,
+    unBannedUser:null,
+    promotedUser:null,
+    demotedUser:null,
     allProducts:[],
     allCategories:[],
+    allUsers:[],
     deletedProduct:null,
     deletedCategory:null,
     editedProduct:null,
@@ -42,6 +47,57 @@ export const useAdminPagesStore=create((set)=>({
             set({totalUsers:res.data});
         } catch (error) {
             console.log("Error in getTotalUsers store",error);
+        }
+    },
+    getAllUsers:async()=>{
+        set({fetchingProducts:true});
+        try {
+            const res=await axiosInstance.get('/admin/dashboard/allUsers');
+            set({allUsers:res.data});
+        } catch (error) {
+            console.log("Error in getAllUsers store",error);
+        } finally{
+            set({fetchingProducts:false});
+        }
+    },
+    banUser:async(userId)=>{
+        try {
+            const res=await axiosInstance.get(`/admin/dashboard/banUser/${userId}`);
+            set({bannedUser:res.data});
+            toast.success("User Banned ");
+        } catch (error) {
+            console.log("Error in banUser store",error);
+            toast.error(error.response?.data?.message);
+        }
+    },
+    unBanUser:async(userId)=>{
+        try {
+            const res=await axiosInstance.get(`/admin/dashboard/unBanUser/${userId}`);
+            set({unBannedUser:res.data});
+            toast.success("User UnBanned ");
+        } catch (error) {
+            console.log("Error in unBanUser store",error);
+            toast.error(error.response?.data?.message);
+        }
+    },
+    promoteUser:async(userId)=>{
+        try {
+            const res=await axiosInstance.get(`/admin/dashboard/promote/${userId}`);
+            set({promotedUser:res.data});
+            toast.success("User Promoted");
+        } catch (error) {
+            console.log("Error in promoteUser store",error);
+            toast.error(error.response?.data?.message);
+        }
+    },
+    demoteUser:async(userId)=>{
+        try {
+            const res=await axiosInstance.get(`/admin/dashboard/demote/${userId}`);
+            set({promotedUser:res.data});
+            toast.success("User Demoted");
+        } catch (error) {
+            console.log("Error in promoteUser store",error);
+            toast.error(error.response?.data?.message);
         }
     },
     getAllProducts:async()=>{
