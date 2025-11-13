@@ -71,7 +71,7 @@ export default function AdminAddCategory(){
                     value={searchInp}
                     onChange={(e)=>setSearchInp(e.target.value)}
                     variant='outlined' 
-                    placeholder='Search Products'
+                    placeholder='Search Categories'
                     className='w-full'
                     sx={{
                         mt:"10px",

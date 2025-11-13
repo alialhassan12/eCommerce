@@ -9,6 +9,7 @@ import Category from './pages/Category.jsx';
 import Products from './pages/Products.jsx';
 import ProductInfo from './pages/ProductInfo.jsx';
 import AdminMainPage from './pages/AdminMainPage.jsx';
+import Profile from './pages/Profile.jsx';
 //component
 import CircularProgress from '@mui/material/CircularProgress';
 import ProtectedRoutes from './components/protectedRoutes.jsx';
@@ -58,6 +59,7 @@ function App() {
         <Route path='/category' element={!authUser?<Login/>:<Category/>}></Route>
         <Route path='/category/:id' element={!authUser?<Login/>:<Products/>}></Route>
         <Route path='/category/:id/:prodId' element={!authUser?<Login/>:<ProductInfo/>}></Route>
+        <Route path='/profile' element={!authUser?<Login/>:<Profile/>}></Route>
       </Routes>
       
       <Toaster/>
