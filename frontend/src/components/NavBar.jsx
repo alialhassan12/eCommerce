@@ -29,7 +29,9 @@ export default function NavBar({active}){
                     </li>
                     {authUser.role === 'admin'
                         ?
-                            <li className={active=="Dashboard"?"text-blue-400 font-semibold ":"hover:text-blue-400 font-semibold"}><Link to={'/admin/Dashboard'}>Dashboard</Link></li>
+                            <li className={active=="Dashboard"?"text-blue-400 font-semibold ":"hover:text-blue-400 font-semibold"}>
+                                <Link to={'/admin/Dashboard'}>Dashboard</Link>
+                            </li>
                         :
                             <></>
                         }
@@ -39,8 +41,13 @@ export default function NavBar({active}){
             {/* Cart and profile */}
             <div>
                 <ul className="flex justify-center items-center list-none space-x-5  bg-blue-500/20 rounded-2xl p-2.5" >
-                    <li className='hover:text-blue-400 font-semibold'><Link><ShoppingCartIcon/></Link></li>
-                    <li className='hover:text-blue-400 font-semibold'><Link><AccountCircleIcon/></Link></li>
+                    <li className='hover:text-blue-400 font-semibold'>
+                        <Link ><ShoppingCartIcon/>
+                        </Link>
+                    </li>
+                    <li className='hover:text-blue-400 font-semibold'>
+                        <Link className={active=="Profile"?"text-blue-400 font-semibold ":"hover:text-blue-400 font-semibold"} to={`/profile` }><AccountCircleIcon/></Link>
+                    </li>
                 </ul>
             </div>
         </div>

@@ -55,7 +55,7 @@ export default function AdminManageUsers(){
                     value={searchInp}
                     onChange={(e)=>setSearchInp(e.target.value)}
                     variant='outlined' 
-                    placeholder='Search Products'
+                    placeholder='Search Users'
                     className='w-full'
                     sx={{
                         mt:"10px",
