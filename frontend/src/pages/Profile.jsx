@@ -13,7 +13,7 @@ import DialogActions from "@mui/material/DialogActions";
 import TextField from "@mui/material/TextField";
 
 export default function Profile(){
-    const {authUser,isLoggingIn,logout,isLoading,editProfile,changePassword,deleteAccount}=useAuthStore();
+    const {authUser,logout,isLoading,editProfile,changePassword,deleteAccount}=useAuthStore();
     const navigate =useNavigate();
     // states
     const [userUpdates,setUserUpdates]=useState({
@@ -89,19 +89,8 @@ export default function Profile(){
                     <div className="p-7 mr-[50px] bg-gradient-to-b from-[#0a0f1c] via-[#0e1422] to-[#0b0f19] rounded-[10px] border border-[#1e2a3a] shadow-[0_0_20px_rgba(0,0,0,0.4)]">
                         <div className="flex flex-col gap-2">
                             <Button onClick={handleOpenEditDialog} variant="outlined" endIcon={<EditIcon/>}>Edit Profile</Button>
-                            <Button onClick={handleOpenChangeDialog} variant="outlined" endIcon={<ChangeCircleIcon/>}>Change Password</Button>
-                            
-                            {isLoggingIn
-                            ?
-                                <Button  variant="outlined">
-                                    <div className="w-full text-center">
-                                        <div className="loading loading-infinity loading-xl text-blue-500"></div>
-                                    </div>
-                                </Button>
-                            :
-                                <Button onClick={handleOpenLogOutDialog} variant="outlined" endIcon={<ExitToAppIcon/>}>Sign Out</Button>
-                            }
-                            
+                            <Button onClick={handleOpenChangeDialog} variant="outlined" endIcon={<ChangeCircleIcon/>}>Reset Password</Button>
+                            <Button onClick={handleOpenLogOutDialog} variant="outlined" endIcon={<ExitToAppIcon/>}>Sign Out</Button>
                             <Button onClick={handleOpenDeleteDialog} variant="contained" endIcon={<HighlightOffIcon/>} color="error">Delete Account</Button>
                         </div>
                     </div>
@@ -268,7 +257,7 @@ export default function Profile(){
                             }
                         }}
                         >
-                        <h2 className="text-blue-500 text-2xl mb-5">Edit Profile</h2>
+                        <h2 className="text-blue-500 text-2xl mb-5">Reset Password</h2>
                         <TextField
                             value={newPasswords.newPass}
                             onChange={(e)=>setNewPasswords({...newPasswords,newPass:e.target.value})}

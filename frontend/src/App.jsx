@@ -10,12 +10,14 @@ import Products from './pages/Products.jsx';
 import ProductInfo from './pages/ProductInfo.jsx';
 import AdminMainPage from './pages/AdminMainPage.jsx';
 import Profile from './pages/Profile.jsx';
+import Cart from './pages/Cart.jsx';
 //component
 import CircularProgress from '@mui/material/CircularProgress';
 import ProtectedRoutes from './components/protectedRoutes.jsx';
 //hooks
 import { useAuthStore } from './store/authStore.js';
 import { useEffect } from 'react';
+
 
 function App() {
   const checkAuth=useAuthStore((state)=>state.checkAuth);
@@ -60,6 +62,7 @@ function App() {
         <Route path='/category/:id' element={!authUser?<Login/>:<Products/>}></Route>
         <Route path='/category/:id/:prodId' element={!authUser?<Login/>:<ProductInfo/>}></Route>
         <Route path='/profile' element={!authUser?<Login/>:<Profile/>}></Route>
+        <Route path='/cart' element={!authUser?<Login/>:<Cart/>}></Route>
       </Routes>
       
       <Toaster/>

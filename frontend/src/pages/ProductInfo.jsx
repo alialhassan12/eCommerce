@@ -8,9 +8,13 @@ import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
 import IconButton from '@mui/material/IconButton';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import 'aos/dist/aos.css';
+import { useCartStore } from "../store/cartStore";
+import { useAuthStore } from "../store/authStore";
 
 export default function ProductInfo(){
+    const {authUser}=useAuthStore();
     const {product,loadProduct,getProduct}=useProductStore();
+    const {addToCart}=useCartStore();
     const [previewImg,setPreviewImg]=useState(null);
     const {id :categoryId ,prodId}=useParams();
     useEffect(()=>{
@@ -40,7 +44,7 @@ export default function ProductInfo(){
                             <h1>{product.name}</h1>
                             <h2>${product.price}</h2>
                             <p className="text-wrap">Lorem ipsum dolor sit amet consectetur adipisicing elit. Itaque libero suscipit nemo repellat fuga id? Debitis autem error vel sed fugit? Temporibus laborum delectus ducimus deleniti libero sint rerum aut?</p>
-                                <Button variant="outlined" endIcon={<AddShoppingCartIcon/>}>Add To Cart</Button>
+                                <Button onClick={()=>addToCart(authUser._id,product)} variant="outlined" endIcon={<AddShoppingCartIcon/>}>Add To Cart</Button>
                                 <IconButton color="primary" aria-label="favorite">
                                     <FavoriteBorderIcon />
                                 </IconButton>
